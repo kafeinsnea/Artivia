@@ -44,6 +44,7 @@ struct HomeView: View {
                                                 Color.blue], startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                
             }
         }
     }
