@@ -47,8 +47,15 @@ struct HomeView: View {
                 }
                 
             }
+            .fullScreenCover(isPresented: $homeVM.showResultSheet) {            ResultView(image: homeVM.generatedImage!){
+                homeVM.generatedImage = nil
+                     homeVM.showResultSheet = false
+            }
+            }
         }
+        
     }
+
     
     var HeaderView: some View {
         VStack(spacing:12){

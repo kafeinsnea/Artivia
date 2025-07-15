@@ -12,6 +12,8 @@ class HomeViewModel: ObservableObject{
     @Published var selectedImage: UIImage? = nil
     @Published var selectedStyleIndex: Int? = nil
     @Published var isGenerating: Bool = false
+    @Published var generatedImage: UIImage? = nil
+    @Published var showResultSheet: Bool = false
     
     var styles = ["Cartoon", "Oil Painting", "Sketch", "Watercolor", "Pixel Art"]
     
