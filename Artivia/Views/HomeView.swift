@@ -36,7 +36,7 @@ struct HomeView: View {
                         imageInputSection
                      
                         //sytle pick section
-                       
+                        stylePicker
                         
                         //generate button
                         generateButton
@@ -47,16 +47,19 @@ struct HomeView: View {
                 }
                 
             }
-            .fullScreenCover(isPresented: $homeVM.showResultSheet) {            ResultView(image: homeVM.generatedImage!){
-                homeVM.generatedImage = nil
-                     homeVM.showResultSheet = false
-            }
+            .fullScreenCover(isPresented: $homeVM.showResultSheet) {
+                if let image = homeVM.generatedImage {
+                    ResultView(image: image) {
+                        homeVM.generatedImage = nil
+                        homeVM.showResultSheet = false
+                    }
+                }
             }
         }
         
     }
 
-    
+    // header
     var HeaderView: some View {
         VStack(spacing:12){
             HStack{
@@ -85,6 +88,7 @@ struct HomeView: View {
         .padding(.top,20)
     }
     
+    //image input
     var imageInputSection: some View {
         VStack(spacing: 20) {
             if let image = homeVM.selectedImage {
@@ -139,28 +143,50 @@ struct HomeView: View {
         }
     }
     
+    // style picker
     var stylePicker: some View {
-        VStack {
-          
-        }
-    }
-    
-    var generateButton: some View {
-        Button{
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Choose a Style")
+                .font(.headline)
             
-        }label: {
-            if homeVM.isGenerating{
-                HStack {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .scaleEffect(0.8)
-                    Text("Generating")
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(homeVM.styles.indices, id: \.self) { index in
+                        Text(homeVM.styles[index])
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(homeVM.selectedStyleIndex == index ? Color.purple.opacity(0.7) : Color.gray.opacity(0.2))
+                            .foregroundColor(.primary)
+                            .cornerRadius(10)
+                            .onTapGesture {
+                                homeVM.selectedStyleIndex = index
+                            }
+                    }
                 }
-            } else{
-                Image(systemName: "wand.and.rays")
-                Text("Transform Image")
             }
         }
+        .padding()
+    }
+
+    
+    var generateButton: some View {
+        Button {
+              Task {
+                  await homeVM.generateImage()
+              }
+          } label: {
+              if homeVM.isGenerating {
+                  HStack {
+                      ProgressView()
+                          .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                          .scaleEffect(0.8)
+                      Text("Generating")
+                  }
+              } else {
+                  Image(systemName: "wand.and.rays")
+                  Text("Transform Image")
+              }
+          }
         .font(.headline)
         .fontWeight(.semibold)
         .foregroundStyle(Color.white)
