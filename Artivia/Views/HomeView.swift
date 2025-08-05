@@ -10,6 +10,7 @@ import PhotosUI
 
 struct HomeView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var showGallery: Bool = false
     @StateObject private  var photoVM = PhotoViewModel()
     @StateObject private  var homeVM = HomeViewModel()
     var body: some View {
@@ -53,7 +54,12 @@ struct HomeView: View {
                         homeVM.generatedImage = nil
                         homeVM.showResultSheet = false
                     }
+                    .environmentObject(photoVM)
                 }
+            }
+            .sheet(isPresented: $showGallery) {
+                GalleryView()
+                    .environmentObject(photoVM)
             }
         }
         
@@ -63,6 +69,17 @@ struct HomeView: View {
     var HeaderView: some View {
         VStack(spacing:12){
             HStack{
+                Button(action: { showGallery = true }) {
+                    Image(systemName: "photo.on.rectangle")
+                        .font(.title2)
+                        .foregroundStyle(Color.purple)
+                        .frame(width: 44, height: 44)
+                        .background(Color.white.opacity(0.7))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                
+                Spacer()
+                
                 Image(systemName: "sparkles")
                     .font(.title2)
                     .foregroundStyle(Color.white)
@@ -77,6 +94,17 @@ struct HomeView: View {
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(LinearGradient(colors: [Color.purple, Color.blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                
+                Spacer()
+            
+                Button(action: { showGallery = true }) {
+                    Image(systemName: "photo.on.rectangle")
+                        .font(.title2)
+                        .foregroundStyle(Color.purple)
+                        .frame(width: 44, height: 44)
+                        .background(Color.white.opacity(0.7))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
             }
             
             Text("Transform your photos with AI-powered artistic styles")

@@ -8,11 +8,29 @@
 import SwiftUI
 
 struct GalleryView: View {
+    @EnvironmentObject var photoVM: PhotoViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                ForEach(photoVM.gallery) { photo in
+                    if let uiImage = photo.image {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 150, height: 150)
+                            .clipped()
+                            .cornerRadius(10)
+                    }
+                }
+            }
+            .padding()
+        }
+        .navigationTitle("My Gallery")
     }
 }
 
 #Preview {
     GalleryView()
+        .environmentObject(PhotoViewModel())
 }
