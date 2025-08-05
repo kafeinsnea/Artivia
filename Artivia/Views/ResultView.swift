@@ -12,6 +12,7 @@ struct ResultView: View {
     let image: UIImage
     let onDismiss: () -> Void
     @State private var isShareSheetPresented: Bool = false
+    @EnvironmentObject var photoVM: PhotoViewModel
     
     var body: some View {
         NavigationView {
@@ -74,8 +75,8 @@ struct ResultView: View {
         }
     }
     func saveImage() {
-           UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-           // TODO: Aynı zamanda uygulama içi galeriye de kaydedilecek (ViewModel'de fonksiyon olabilir)
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        photoVM.addPhoto(image)
        }
 }
 
@@ -94,5 +95,6 @@ struct ActivityView: UIViewControllerRepresentable {
 #Preview {
     ResultView(image: UIImage(named: "sampleImage") ?? UIImage()) {
     }
+    .environmentObject(PhotoViewModel())
 }
 
