@@ -57,6 +57,11 @@ struct HomeView: View {
                     .environmentObject(photoVM)
                 }
             }
+            .onChange(of: homeVM.generatedImage) { _, newImage in
+                if let image = newImage {
+                    photoVM.addPhoto(image)
+                }
+            }
             .sheet(isPresented: $showGallery) {
                 GalleryView()
                     .environmentObject(photoVM)
@@ -74,8 +79,8 @@ struct HomeView: View {
                         .font(.title2)
                         .foregroundStyle(Color.purple)
                         .frame(width: 44, height: 44)
-                        .background(Color.white.opacity(0.7))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+//                        .background(Color.white.opacity(0.7))
+//                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 
                 Spacer()
@@ -98,12 +103,12 @@ struct HomeView: View {
                 Spacer()
             
                 Button(action: { showGallery = true }) {
-                    Image(systemName: "photo.on.rectangle")
+                    Image(systemName: "crown.fill")
                         .font(.title2)
                         .foregroundStyle(Color.purple)
                         .frame(width: 44, height: 44)
-                        .background(Color.white.opacity(0.7))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+//                        .background(Color.white.opacity(0.7))
+//                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
             }
             
@@ -178,19 +183,22 @@ struct HomeView: View {
                 .font(.headline)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
+                HStack(spacing: 16) {
                     ForEach(homeVM.styles.indices, id: \.self) { index in
-                        Text(homeVM.styles[index])
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(homeVM.selectedStyleIndex == index ? Color.purple.opacity(0.7) : Color.gray.opacity(0.2))
-                            .foregroundColor(.primary)
-                            .cornerRadius(10)
-                            .onTapGesture {
-                                homeVM.selectedStyleIndex = index
-                            }
+                        Button {
+                            homeVM.selectedStyleIndex = index
+                        } label: {
+                            StyleCard(
+                                title: homeVM.styles[index],
+                                image: homeVM.getExampleForStyle(homeVM.styles[index]),
+                                isSelected: homeVM.selectedStyleIndex == index
+                            )
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
+                .padding(.vertical, 2)
+//                .animation(.spring(response: 0.25, dampingFraction: 0.85), value: homeVM.selectedStyleIndex)
             }
         }
         .padding()
@@ -231,6 +239,40 @@ struct HomeView: View {
         .disabled(homeVM.isGenerating || !homeVM.isReadyToGenerate)
         .opacity((homeVM.isGenerating || !homeVM.isReadyToGenerate) ? 0.5 : 1.0)
 
+    }
+}
+
+private struct StyleCard: View {
+    let title: String
+    let image: Image
+    let isSelected: Bool
+
+    var body: some View {
+        VStack(spacing: 8) {
+            image
+                .resizable()
+                .scaledToFill()
+                .frame(width: 80, height: 80)
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            Text(title)
+                .font(.headline)
+                .fontWeight(isSelected ? .semibold : .regular)
+                .foregroundStyle(.primary)
+        }
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(isSelected ? Color.purple.opacity(0.12) : Color.gray.opacity(0.12))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(
+                    LinearGradient(colors: [Color.purple, Color.blue], startPoint: .topLeading, endPoint: .bottomTrailing),
+                    lineWidth: isSelected ? 2 : 0
+                )
+        )
+        .shadow(color: Color.black.opacity(isSelected ? 0.12 : 0.06), radius: isSelected ? 8 : 4, x: 0, y: 2)
+        .scaleEffect(isSelected ? 1.03 : 1.0)
     }
 }
 

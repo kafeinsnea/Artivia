@@ -15,7 +15,7 @@ class HomeViewModel: ObservableObject{
     @Published var generatedImage: UIImage? = nil
     @Published var showResultSheet: Bool = false
     
-    var styles = ["Cartoon", "Oil Painting", "Sketch", "Watercolor", "Pixel Art"]
+    var styles = ["Cartoon", "Plushie", "Ghibli", "Professional"]
     
     var isReadyToGenerate: Bool {
         selectedImage != nil && selectedStyleIndex != nil
@@ -30,6 +30,14 @@ class HomeViewModel: ObservableObject{
         return url
     }
     
+    
+    
+    
+    /*Bu fonksiyon, kullanıcı "Generate" butonuna bastığında çalışır ve:
+     Fotoğrafı Firebase'e yükler
+     Yapay zeka ile dönüştürür (seçilen stile göre)
+     Sonucu indirir ve gösterir
+     Otomatik olarak galeriye ekler (HomeView'daki onChange sayesinde)*/
     func generateImage() async {
         isGenerating = true
          defer { isGenerating = false }
@@ -51,6 +59,21 @@ class HomeViewModel: ObservableObject{
         isGenerating = false
     }
 
+    
+    func getExampleForStyle(_ style: String) -> Image {
+        switch style {
+        case "Plushie":
+            return Image("plushiestyle")
+        case "Cartoon":
+            return Image("cartoonstyle")
+        case "Ghibli":
+            return Image("ghiblistyle")
+        case "Professional":
+            return Image("professionalstyle")
+        default:
+            return Image("cartoonstyle")
+        }
+    }
 
 }
 

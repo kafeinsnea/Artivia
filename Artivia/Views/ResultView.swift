@@ -76,8 +76,7 @@ struct ResultView: View {
     }
     func saveImage() {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        photoVM.addPhoto(image)
-       }
+    }
 }
 
 // UIKit paylaşım sayfası için helper:
