@@ -27,8 +27,7 @@ struct HomeView: View {
                     endPoint: .bottomTrailing
                 )
                 .ignoresSafeArea()
-               
-                ScrollView{
+              
                     VStack(spacing: 20){
                         //header
                         HeaderView
@@ -44,8 +43,6 @@ struct HomeView: View {
                         
                     }
                     .padding(.horizontal,20)
-                    
-                }
                 
             }
             .fullScreenCover(isPresented: $homeVM.showResultSheet) {
@@ -66,6 +63,7 @@ struct HomeView: View {
                 GalleryView()
                     .environmentObject(photoVM)
             }
+            .ignoresSafeArea()
         }
         
     }
