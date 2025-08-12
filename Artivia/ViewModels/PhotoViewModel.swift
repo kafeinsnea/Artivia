@@ -22,6 +22,11 @@ class PhotoViewModel: ObservableObject {
         saveGallery()
     }
     
+    func deletePhoto(_ photo: PhotoModel) {
+        gallery.removeAll { $0.id == photo.id }
+        saveGallery()
+    }
+    
     private func saveGallery() {
         if let data = try? JSONEncoder().encode(gallery) {
             UserDefaults.standard.set(data, forKey: galleryKey)
