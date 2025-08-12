@@ -11,7 +11,7 @@ SwiftUI ile geliştirildi, Fal.ai ve Firebase teknolojileri kullanıldı.
 ---
 
 ## 🖥 Splash Ekranı
-<img src="./artiviass/artivia22.gif" width="400" />
+<img src="./artiviass/splashview.jpeg" width="400" />
 *Uygulamanın açılış ekranı animasyonu.*
 
 ---
