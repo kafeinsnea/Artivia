@@ -5,13 +5,13 @@ SwiftUI ile geliştirildi, Fal.ai ve Firebase teknolojileri kullanıldı.
 ---
 
 ## 🚀 Demo
-<video src="./artiviass/artivia1.mp4" autoplay loop muted playsinline width="800"></video>  
+<img src="./artiviass/artivia1.gif" width="400" />
 *Artivia'nın fotoğraf dönüştürme sürecini gösteren kısa bir demo.*
 
 ---
 
 ## 🖥 Splash Ekranı
-<video src="./artiviass/artivia2.mp4" autoplay loop muted playsinline width="800"></video>   
+<img src="./artiviass/artivia2.gif" width="400" />
 *Uygulamanın açılış ekranı animasyonu.*
 
 ---
